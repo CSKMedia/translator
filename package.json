@@ -1,0 +1,25 @@
+{
+  "name": "translator",
+  "version": "1.0.0",
+  "description": "A simple tranlator for the Robber Language",
+  "main": "app.js",
+  "dependencies": {
+    "koa": "^2.7.0",
+    "nodemon": "^1.19.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CSKMedia/translator.git"
+  },
+  "author": "Casper Karlsson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CSKMedia/translator/issues"
+  },
+  "homepage": "https://github.com/CSKMedia/translator#readme"
+}
