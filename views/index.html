@@ -1,12 +1,14 @@
-<form class="pt-4">
+<form method="POST" class="pt-4">
   <div class="form-row">
     <div class="col">
       <h4>Swedish</h4>
-        <textarea class="form-control" rows="7"></textarea>
+        <textarea class="form-control" id="swe" name="swe" rows="7"><%- sweText %></textarea>
+        <input type="submit" value="translate" formaction="/translateToRobberLanguage" class="btn btn-primary mt-4">
     </div>
     <div class="col">
         <h4>Robber language</h4>
-        <textarea class="form-control" rows="7"></textarea>
+        <textarea class="form-control" id="rob" name="rob" rows="7"><%- robText %></textarea>
+        <input type="submit" value="translate" formaction="/translateToSwedishLanguage" class="btn btn-primary mt-4">
     </div>
   </div>
 </form>
