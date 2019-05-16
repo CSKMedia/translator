@@ -16,13 +16,13 @@ let robText = ''
 // Bodyparser
 app.use(bodyParser())
 
-// View-engine optionW
+// View-engine option
 render(app, {
   root: path.join(__dirname, 'views'),
   layout: 'template',
   viewExt: 'html',
   cache: false,
-  debug: true
+  debug: false
 })
 
 // Router
@@ -46,12 +46,13 @@ async function translateToRobberLanguage (ctx) {
   const body = ctx.request.body
   sweText = body.swe
 
-  let vowels = ['a', 'o', 'u', 'å', 'e', 'i', 'ä', 'ö', ' ']
+  let consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
   let translatedText = ''
+
   for (let i = 0; i < sweText.length; i++) {
     let currentLetter = sweText[i]
 
-    if (!vowels.includes(currentLetter) && isNaN(currentLetter)) {
+    if (consonants.includes(currentLetter.toLowerCase())) {
       translatedText += (currentLetter + 'o' + currentLetter)
     } else translatedText += currentLetter
   }
@@ -68,18 +69,18 @@ async function translateToSwedishLanguage (ctx) {
   robText = body.rob
 
   let translateText = robText
-  let vowels = ['a', 'o', 'u', 'å', 'e', 'i', 'ä', 'ö', ' ']
+  let consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
+  let result = ''
 
   for (let i = 0; i < translateText.length; i++) {
     let currentLetter = translateText[i]
-    let index = translateText.indexOf(currentLetter)
-
-    if (!vowels.includes(currentLetter)) {
-      translateText = translateText.slice(index, index + 2)
+    if (consonants.includes(currentLetter)) {
+      // regExp från:  https://github.com/denizdogan/robber-language/blob/master/src/index.js
+      result = translateText.replace(/([bcdfghjklmnpqrstvwxz])o\1/gi, '$1', currentLetter)
     }
   }
 
-  sweText = translateText
+  sweText = result
   ctx.redirect('/')
 }
 
