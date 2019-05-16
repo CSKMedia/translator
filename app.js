@@ -3,6 +3,7 @@ const KoaRouter = require('koa-router')
 const path = require('path')
 const render = require('koa-ejs')
 const bodyParser = require('koa-bodyparser')
+const serve = require('koa-static')
 
 const app = new Koa()
 const router = new KoaRouter()
@@ -15,6 +16,9 @@ let robText = ''
 
 // Bodyparser
 app.use(bodyParser())
+
+// serve static files
+app.use(serve('./public'))
 
 // View-engine option
 render(app, {
