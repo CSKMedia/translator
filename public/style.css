@@ -1,8 +1,12 @@
-
 body {
   font-family: 'Raleway', sans-serif;
 }
 
 .bg-dark {
   background: #23282d;
+}
+
+.btn-blue {
+  background-color: #5AA9D1;
+  color:#fff;
 }

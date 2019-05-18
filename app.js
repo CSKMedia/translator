@@ -5,12 +5,13 @@ const render = require('koa-ejs')
 const bodyParser = require('koa-bodyparser')
 const serve = require('koa-static')
 
+const translation = require('./translation')
+
 const app = new Koa()
 const router = new KoaRouter()
 
 const port = 3000
 
-// variabler
 let sweText = ''
 let robText = ''
 
@@ -25,7 +26,7 @@ render(app, {
   root: path.join(__dirname, 'views'),
   layout: 'template',
   viewExt: 'html',
-  cache: false,
+  cache: true,
   debug: false
 })
 
@@ -41,51 +42,16 @@ router.get('/', async ctx => {
 })
 
 // POST route
-router.post('/translateToRobberLanguage', translateToRobberLanguage)
-router.post('/translateToSwedishLanguage', translateToSwedishLanguage)
-
-// function to translate to Robber Language
-async function translateToRobberLanguage (ctx) {
-
-  const body = ctx.request.body
-  sweText = body.swe
-
-  let consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
-  let translatedText = ''
-
-  for (let i = 0; i < sweText.length; i++) {
-    let currentLetter = sweText[i]
-
-    if (consonants.includes(currentLetter.toLowerCase())) {
-      translatedText += (currentLetter + 'o' + currentLetter)
-    } else translatedText += currentLetter
-  }
-
-  robText = translatedText
-
+router.post('/translateToRobberLanguage', (ctx) => {
+  sweText = ctx.request.body.swe
+  robText = translation.translateToRobberLanguage(sweText)
   ctx.redirect('/')
-}
+})
 
-// function to translate to Swedish Language
-// TODO : Fix reverse-translation (not working)
-async function translateToSwedishLanguage (ctx) {
-  const body = ctx.request.body
-  robText = body.rob
-
-  let translateText = robText
-  let consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
-  let result = ''
-
-  for (let i = 0; i < translateText.length; i++) {
-    let currentLetter = translateText[i]
-    if (consonants.includes(currentLetter)) {
-      // regExp från:  https://github.com/denizdogan/robber-language/blob/master/src/index.js
-      result = translateText.replace(/([bcdfghjklmnpqrstvwxz])o\1/gi, '$1', currentLetter)
-    }
-  }
-
-  sweText = result
+router.post('/translateToSwedishLanguage', (ctx) => {
+  robText = ctx.request.body.rob
+  sweText = translation.translateToSwedishLanguage(robText)
   ctx.redirect('/')
-}
+})
 
 app.listen(port, () => console.log('server is running on port: ' + port))
